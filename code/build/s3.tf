@@ -17,5 +17,6 @@ resource "aws_s3_bucket" "dev_s3" {
     git_repo             = "prisma-cloud-devsecops-workshop"
     yor_name             = "dev_s3"
     yor_trace            = "e5aea444-0dd1-4cff-8fa7-a0a7a6a4ab3d"
+  user = "achambers"
   }
 }
