@@ -2,7 +2,7 @@
 
 This workshop will demonstrate how to leverage infrastructure as code (IaC) and DevSecOps patterns to automate, scale, and improve the security posture of cloud infrastructure and applications. We will create a pipeline that ensures our configurations are secure and compliant from code to cloud.
 
-This guide provides step-by-step instructions to integrate **Prisma Cloud** (and **checkov**) with **Terraform Cloud, GitHub, VScode** and **AWS**. 
+This guide provides step-by-step instructions to integrate **Prisma Cloud** (and **checkov**) with **Terraform Cloud, GitHub, VScode** and **AWS**.
 
 ![](images/devsecops-workflow.png)
 
@@ -62,7 +62,7 @@ This guide provides step-by-step instructions to integrate **Prisma Cloud** (and
 ## DevSecOps
 The foundation of DevSecOps lies in the DevOps movement, wherein development and operations functions have merged to make deployments faster, safer, and more repeatable. Common DevOps practices include automated infrastructure build pipelines (CI/CD) and version-controlled manifests (GitOps) to make it easier to control cloud deployments. By baking software and infrastructure quality requirements into the release lifecycle, teams save time manually reviewing code, letting teams focus on shipping features.
 
-As deployments to production speed up, however, many traditional cloud security concepts break down. With the rise of containerized technologies, serverless functions, and IaC frameworks, it is increasingly harder to maintain visibility of cloud security posture. 
+As deployments to production speed up, however, many traditional cloud security concepts break down. With the rise of containerized technologies, serverless functions, and IaC frameworks, it is increasingly harder to maintain visibility of cloud security posture.
 
 By leveraging DevOps foundations, security and development teams can build security scanning and policy enforcement into automated pipelines. The ultimate goal with DevSecOps is to “shift cloud security left.” That means automating it and embedding it earlier into the development lifecycle so that actions can be taken earlier. Preventing risky deployments is a more proactive approach to traditional cloud security that often slows down development teams with deployment rollbacks and disruptive fixes.
 
@@ -74,7 +74,7 @@ For DevSecOps to be successful for teams working to build and secure infrastruct
 ## Infrastructure as Code Using Terraform
 Infrastructure as code (IaC) frameworks, such as  HashiCorp Terraform, make cloud provisioning scalable and straightforward by leveraging automation and code. Defining our cloud infrastructure in code simplifies repetitive DevOps tasks and gives us a versioned, auditable source of truth for the state of an environment.
 
-Terraform is useful for defining resource configurations and interacting with APIs in a codified, stateful manor. Any updates we want to make, such as adding more instances, or changes to a configuration, can be handled by Terraform. 
+Terraform is useful for defining resource configurations and interacting with APIs in a codified, stateful manor. Any updates we want to make, such as adding more instances, or changes to a configuration, can be handled by Terraform.
 
 For example, the following Terraform resource block defines a simple AWS S3 bucket:
 
@@ -91,7 +91,7 @@ After performing `terraform init`, we can provision an S3 bucket with the follow
 terraform apply
 ```
 
-Any changes made to the resource definition within a .tf file, such as adding tags or changing the acl, can be pushed with the  `terraform apply` command. 
+Any changes made to the resource definition within a .tf file, such as adding tags or changing the acl, can be pushed with the  `terraform apply` command.
 
 Another benefit of using Terraform to define infrastructure is that code can be scanned for  misconfigurations before the resource is created. This allows for security controls to be integrated into the development process, preventing issues from ever being introduced, deployed and exploited.
 
@@ -184,7 +184,7 @@ Select `Additional instance types` then choose `t3.medium` from the drop-down.
 
 ![c9-env-options2](images/c9-env-options2.png)
 
-Leave all other options on default setting and click `Create`. 
+Leave all other options on default setting and click `Create`.
 
 ![c9-env-options3](images/c9-env-options3.png)
 
@@ -203,9 +203,9 @@ Close all of the default windows, then create a New Terminal window.
 
 Congrats! Cloud9 is now ready to use. Before installing checkov or pulling code to scan, create and activate a python virtual environment to better organize python packages.
 
-``` 
+```
 python3 -m venv env
-source ./env/bin/activate 
+source ./env/bin/activate
 ```
 
 ![c9-py-venv](images/c9-py-venv.png)
@@ -214,8 +214,8 @@ source ./env/bin/activate
 # Section 1: Code Scanning with checkov
 
 [Checkov](https://checkov.io) is an open source 'policy-as-code' tool that scans cloud infrastructure defintions to find misconfigurations before they are deployed. Some of the key benefits of checkov:
-1. Runs as a command line interface (CLI) tool 
-2. Supports many common plaftorms and frameworks 
+1. Runs as a command line interface (CLI) tool
+2. Supports many common plaftorms and frameworks
 3. Ships with thousands of default policies
 4. Works on windows/mac/linux (any system with python installed)
 
@@ -281,9 +281,9 @@ Great! Now we have some code to scan. Let's jump in...
 
 ## Scan with checkov
 
-Checkov can be configured to scan files and enforce policies in many different ways. To highlight a few: 
-1. Scans can run on individual files or entire directories. 
-2. Policies can be selected through selection or omission. 
+Checkov can be configured to scan files and enforce policies in many different ways. To highlight a few:
+1. Scans can run on individual files or entire directories.
+2. Policies can be selected through selection or omission.
 3. Enforcement can be determined by flags that control checkov's exit code.
 
 
@@ -299,7 +299,7 @@ Failed checks are returned containing the offending file and resource, the lines
 
 ![](images/checkov-result.png)
 
-Now try running checkov on an individual file with `checkov -f <filename>`. 
+Now try running checkov on an individual file with `checkov -f <filename>`.
 
 ```
 checkov -f deployment_ec2.tf
@@ -308,12 +308,12 @@ checkov -f deployment_ec2.tf
 checkov -f simple_ec2.tf
 ```
 
-> **⍰  Question** 
+> **⍰  Question**
 >
 > Why are there more security findings for `deployment_ec2.tf` than there are for `simple_ec2.tf`? What about `simple_s3.tf` vs `simple_ec2.tf`?
 
 
-Policies can be optionally enforced or skipped with the `--check` and `--skip-check` flags. 
+Policies can be optionally enforced or skipped with the `--check` and `--skip-check` flags.
 
 ```
 checkov -f deployment_s3.tf --check CKV_AWS_18,CKV_AWS_52
@@ -335,7 +335,7 @@ checkov -d . --skip-framework dockerfile
 ![](images/checkov-secrets.png)
 
 
-Lastly, enforcement can be more granularly controlled by using the `--soft-fail` option. Applying `--soft-fail` results in the scan always returning a 0 exit code. Using `--hard-fail-on` overrides this option. 
+Lastly, enforcement can be more granularly controlled by using the `--soft-fail` option. Applying `--soft-fail` results in the scan always returning a 0 exit code. Using `--hard-fail-on` overrides this option.
 
 Check the exit code when running `checkov -d . ` with and without the `--soft-fail` option.
 
@@ -351,7 +351,7 @@ An example of using `--soft-fail` and exit codes in a pipeline context will be d
 
 ## Custom Policies
 
-Checkov supports the creation of [Custom Policies](https://www.checkov.io/3.Custom%20Policies/YAML%20Custom%20Policies.html) for users to customize their own policy and configuration checks. Custom policies can be written in YAML (recommended) or python and applied with the `--external-checks-dir` or `--external-checks-git` flags. 
+Checkov supports the creation of [Custom Policies](https://www.checkov.io/3.Custom%20Policies/YAML%20Custom%20Policies.html) for users to customize their own policy and configuration checks. Custom policies can be written in YAML (recommended) or python and applied with the `--external-checks-dir` or `--external-checks-git` flags.
 
 Let's create a custom policy to check for [local-exec and remote-exec Provisioners](https://developer.hashicorp.com/terraform/language/resources/provisioners/local-exec) being used in Terraform resource definitons. (Follow link to learn more about provisioners and why it is a good idea to check for them).
 
@@ -363,7 +363,7 @@ metadata:
 definition:
  and:
   - cond_type: "attribute"
-    resource_types: all 
+    resource_types: all
     attribute: "provisioner/local-exec"
     operator: "not_exists"
   - cond_type: "attribute"
@@ -414,7 +414,7 @@ You can leverage GitHub Actions to run automated scans for every build or specif
 Let's begin by setting an action from the repository page, under the `Actions` tab. Then click on `set up a workflow yourself ->` to create a new action from scratich.
 
 
-<img src="images/gh-actions-new-workflow.png" width="800" height="300" /> 
+<img src="images/gh-actions-new-workflow.png" width="800" height="300" />
 
 Name the file `checkov.yaml` and add the following code snippet into the editor.
 
@@ -424,18 +424,18 @@ on:
   pull_request:
   push:
     branches:
-      - main    
+      - main
 jobs:
   scan:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for GitHub/codeql-action/upload-sarif to upload SARIF results
-     
+
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Run checkov 
+
+    - name: Run checkov
       id: checkov
       uses: bridgecrewio/checkov-action@master
       with:
@@ -444,10 +444,10 @@ jobs:
         #api-key: ${{ secrets.BC_API_KEY }}
       #env:
         #PRISMA_API_URL: https://api4.prismacloud.io
-        
+
     - name: Upload SARIF file
       uses: GitHub/codeql-action/upload-sarif@v2
-      
+
       # Results are generated only on a success or failure
       # this is required since GitHub by default won't run the next step
       # when the previous one has failed. Alternatively, enable soft_fail in checkov action.
@@ -466,7 +466,7 @@ Verify that the action is running (or has run) by navigating back to the `Action
 ![](images/gh-actions-workflows.png)
 
 
-> **⍰  Question** 
+> **⍰  Question**
 >
 > The action will result in a "Failure" (❌) on the first run, why does this happen?
 
@@ -477,7 +477,7 @@ View the results of the run by clicking on the `Create checkov.yaml` link.
 
 Notice the policy violations that were seen earlier in CLI/Cloud9 are now displayed here. However, this is not the only place they are sent...
 
-## View results in GitHub Secuirty 
+## View results in GitHub Secuirty
 Checkov natively supports SARIF format and generates this output by default. GitHub Security accepts SARIF for uploading security issues. The GitHub Action created earlier handles the plumbing between the two.
 
 
@@ -485,7 +485,7 @@ Navigate to the `Security` tab in GitHub, the click `Code scanning` from the lef
 
 ![](images/ghas-overview.png)
 
-The security issues found by checkov are surfaced here for developers to get actionable feedback on the codebase they are working in without having to leave the platform. 
+The security issues found by checkov are surfaced here for developers to get actionable feedback on the codebase they are working in without having to leave the platform.
 
 ![](images/ghas-code-scanning-results.png)
 
@@ -498,7 +498,7 @@ The security issues found by checkov are surfaced here for developers to get act
 ## Tag and Trace with yor
 [Yor](yor.io) is another open source tool that can be used for tagging and tracing IaC resources from code to cloud. For example, yor can be used to add git metadata and a unique hash to a terraform resource; this can be used to better manage resource lifecycles, improve change management, and ultimately to help tie code defintions to runtime configurations.
 
-Create new file in the GitHub UI under the path `.github/workflows/yor.yaml`. 
+Create new file in the GitHub UI under the path `.github/workflows/yor.yaml`.
 
 ![](images/gh-new-file.png)
 
@@ -516,7 +516,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-  
+
     steps:
       - uses: actions/checkout@v2
         name: Checkout repo
@@ -534,13 +534,13 @@ Check that the action is running, queued, or finished under the `Actions` tab.
 
 More importanly, look at what yor updated by following the commit history and viewing any `.tf` file in the `code/` directory.
 
-<img src="images/yor-tags.png" width="600" height="500" /> 
+<img src="images/yor-tags.png" width="600" height="500" />
 
 
 Notice the `yor_trace` tag? This can be used track "drift" between IaC definitons and runtime configurations.
 
 ## Branch Protection Rules
-Using Branch Protection Rules allows for criteria to be set in order for pushes and pull requests to be merged to a given branch. This can be set up to run checkov and block merges if there are any misconfigurations or vulnerabilities. 
+Using Branch Protection Rules allows for criteria to be set in order for pushes and pull requests to be merged to a given branch. This can be set up to run checkov and block merges if there are any misconfigurations or vulnerabilities.
 
 Within GitHub, go to the `Settings` tab and navigate to `Branches` on the left sidebar, then click `Add branch protection rule`.
 
@@ -568,7 +568,7 @@ Once logged in, follow the prompt to set up a new organization.
 Enter an `Organization name` and provide your email address.
 
 
-<img src="images/tfc-org-details.png" width="700" height="500" /> 
+<img src="images/tfc-org-details.png" width="700" height="500" />
 
 Create a workspace using the `Version Control Workflow` option.
 
@@ -577,7 +577,7 @@ Create a workspace using the `Version Control Workflow` option.
 Select `GitHub`, then `GitHub.com` from the dropdown. Authenticate and authorize the GitHub.
 
 
-<img src="images/tfc-add-github.png" width="600" height="450" /> 
+<img src="images/tfc-add-github.png" width="600" height="450" />
 
 Choose the `prisma-cloud-devsecops-workshop` from the list of repositories.
 
@@ -586,7 +586,7 @@ Choose the `prisma-cloud-devsecops-workshop` from the list of repositories.
 Add a `Workspace Name` and click `Advanced options`.
 
 
-<img src="images/tfc-workspace1.png" width="500" height="600" /> 
+<img src="images/tfc-workspace1.png" width="500" height="600" />
 
 In the `Terraform Working Directory` field, enter `/code/build/`. Select `Only trigger runs when files in specified paths change`.
 
@@ -597,7 +597,7 @@ Leave the rest of the options as default and click `Create`.
 
 <img src="images/tfc-workspace3.png" width="500" height="400" />
 
-Almost done. In order to deploy resources to AWS, we need to provide Terraform Cloud with AWS credentials. We need to add our credentials as workspace variables. Click `Continue to workspace overview` to do continue. 
+Almost done. In order to deploy resources to AWS, we need to provide Terraform Cloud with AWS credentials. We need to add our credentials as workspace variables. Click `Continue to workspace overview` to do continue.
 
 ![](images/tfc-workspace-created.png)
 
@@ -619,7 +619,7 @@ Terraform Cloud is now configured and our pipeline is ready to go. Let's test th
 ## Block a Pull Request, Prevent a Deployment
 We have now configured a GitHub repository to be scanned with checkov and to trigger Terraform Cloud to deploy infrastructure. Let's see how this works in action.
 
-Create a new file in the GitHub UI under the path `code/build/s3.tf`. Enter the following code snippet into the new file. 
+Create a new file in the GitHub UI under the path `code/build/s3.tf`. Enter the following code snippet into the new file.
 
 
 ```hcl
@@ -655,7 +655,7 @@ Wait for the checks to run. Then take note of the result: a blocked pull request
 
 Either bypass branch protections and `Merge pull request` or go back to the GitHub Action for checkov and uncomment the line with `--soft-fail=true`. This will require closing and reopening the pull request.
 
-> **⍰  Question** 
+> **⍰  Question**
 >
 > What other command options could be used to get the pipeline to pass?
 
@@ -674,7 +674,7 @@ Go to the S3 menu within AWS to view the bucket that has been deployed.
 ![](images/aws-s3.png)
 
 
-> **⍰  Question** 
+> **⍰  Question**
 >
 > Given that we only supplied the s3 bucket with a prefix and not a specific bucket name, how can you tell which s3 bucket is the one *you* deployed?
 
@@ -762,7 +762,7 @@ Let's start by integrating with checkov.
 
 
 ## Checkov with API Key
-> [!NOTE] 
+> [!NOTE]
 > Link to docs: [Creating Access Keys for Prisma Cloud](https://docs.prismacloud.io/en/enterprise-edition/content-collections/administration/create-access-keys)
 >
 > Link to docs: [Add Checkov to Prisma Cloud](https://docs.prismacloud.io/en/classic/appsec-admin-guide/get-started/connect-your-repositories/ci-cd-runs/add-checkov)
@@ -777,7 +777,7 @@ Download the csv file containing the credentials then click `Done`.
 
 
 
-![](images/prisma-access-key-created.png) 
+![](images/prisma-access-key-created.png)
 
 In a terminal window run checkov against the entire `code` directory, now with an API key. Use the following command:
 
@@ -790,13 +790,13 @@ checkov -d . --bc-api-key <access_key_id::<secret_key> --repo-id prisma/devsecop
 
 ![](images/c9-checkov-api-key.png)
 
-Notice how the results now contain a severity. There are some other features that come with Prisma Cloud (using an API key) as well... 
+Notice how the results now contain a severity. There are some other features that come with Prisma Cloud (using an API key) as well...
 
 Return back to Prisma Cloud to view the results that checkov surfaced in the platform. Navigate to **Application Security > Projects**.
 
 ![](images/prisma-checkov-results.png)
 
-Let's add this same API key to the GitHub Action created earlier. Within your GitHub repository, go to **Settings > Secrets and variables** then select **Actions**. 
+Let's add this same API key to the GitHub Action created earlier. Within your GitHub repository, go to **Settings > Secrets and variables** then select **Actions**.
 
 ![](images/GitHub-secrets.png)
 
@@ -826,7 +826,7 @@ Return again to Prisma Cloud to view the results that were sent to the the platf
 > You can use Prisma Cloud (checkov w/ an API key) to scan docker images for vulnerabilities! Use the `--docker-image` flag and point to an image name or ID.
 
 ## Terraform Cloud Run Tasks
-> [!NOTE] 
+> [!NOTE]
 > Link to docs: [Connect Terraform Cloud - Run Tasks](https://docs.prismacloud.io/en/enterprise-edition/content-collections/application-security/get-started/connect-code-and-build-providers/ci-cd-runs/add-terraform-run-tasks)
 
 Let's now conenct Prisma Cloud with Terraform Cloud using the Run Tasks integration. This allows for developers and platform teams to get immediate security feedback for every pipeline run. The Run Task integration will also surface results of every pipeline run to Prisma Cloud and the Security team.
@@ -861,7 +861,7 @@ Select your **Workspace** and choose the **Run Stage** in which you want Prisma 
 
 <img src="images/prisma-tfc-workspace.png" width="600" height="500" />
 
-> **⍰  Question** 
+> **⍰  Question**
 >
 > What are some advantages and/or limitations between scanning HCL files and scanning plan.out files?
 
@@ -869,14 +869,14 @@ Once completed, click **Done**.
 
 <img src="images/prisma-tfc-done.png" width="600" height="500" />
 
-Return back to Terraform Cloud to view the integration. Go to your **Workspace** and click **Settings > Run Tasks**. 
+Return back to Terraform Cloud to view the integration. Go to your **Workspace** and click **Settings > Run Tasks**.
 
 ![](images/tfc-run-task-created.png)
 
 
 
 ## GitHub Application
-> [!NOTE] 
+> [!NOTE]
 > Link to docs: [Connect GitHub](https://docs.prismacloud.io/en/enterprise-edition/content-collections/application-security/get-started/connect-code-and-build-providers/code-repositories/add-GitHub)
 
 
@@ -886,7 +886,7 @@ Go to Prisma Cloud and create a new integration under **Settings > Connect Provi
 
 ![](images/prisma-code-build-providers.png)
 
-Under **Code Repositories**, select **GitHub**. 
+Under **Code Repositories**, select **GitHub**.
 
 <img src="images/prisma-gh-app.png" width="600" height="500" />
 
@@ -902,7 +902,7 @@ Select the target repositories to scan now accessible from the Prisma Cloud wiza
 
 <img src="images/prisma-select-repos.png" width="600" height="500" />
 
-Click **Done** once completed. Navigate to **Settings > Providers > Repositories** to view the onboarded repo(s). 
+Click **Done** once completed. Navigate to **Settings > Providers > Repositories** to view the onboarded repo(s).
 
 ![](images/prisma-gh-done.png)
 
@@ -1029,7 +1029,7 @@ This usually happens during a major incident, where DevOps and SRE teams make ma
 We will use the S3 bucket deployed earlier to simulate drift in a resource configuration.
 
 > [!NOTE]
-> By default Prisma Cloud performs full resource scans on an hourly interval. 
+> By default Prisma Cloud performs full resource scans on an hourly interval.
 
 > [!WARNING]
 > VCS repostory must be private and/or part of an Organization for Drift Detection policies to take effect.
@@ -1057,6 +1057,6 @@ Prisma Cloud provides the option to revert the change via the same pull request 
 # Wrapping Up
 Congrats! In this workshop, we didn’t just learn how to identify and automate fixing misconfigurations — we learned how to bridge the gaps between Development, DevOps, and Cloud Security. We are now equipped with full visibility, guardrails, and remediation capabilities across the development lifecycle. We also learned how important and easy it is to make security accessible to our engineering teams.
 
-Try more of the integrations with other popular developer and DevOps tools. Share what you’ve found with other members of your team and show how easy it is to incorporate this into their development processes. 
+Try more of the integrations with other popular developer and DevOps tools. Share what you’ve found with other members of your team and show how easy it is to incorporate this into their development processes.
 
 You can also check out the [Prisma Cloud DevDay](https://register.paloaltonetworks.com/securitydevdays) to experience more of the platform in action.

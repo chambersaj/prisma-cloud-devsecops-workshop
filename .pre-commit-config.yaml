@@ -1,0 +1,12 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+- repo: https://github.com/bridgecrewio/checkov.git
+  rev: '3.2.2' # change to tag or sha
+  hooks:
+    - id: checkov_secrets

@@ -18,5 +18,3 @@ resource "aws_s3_bucket" "dev_s3" {
     yor_trace            = "ee127aa2-2e66-4873-b270-a5612d5e5dac"
   }
 }
-
-
