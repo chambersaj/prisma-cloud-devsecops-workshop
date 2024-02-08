@@ -36,11 +36,11 @@ resource "aws_ebs_volume" "web_host_storage" {
   size = 1
 
   tags = {
-    git_commit           = "d4c35e0270bfd542051278ca30b4b3872c1ae0b2"
+    git_commit           = "9a64007b10025cf6e2c0f98653b3a700912fff70"
     git_file             = "code/deployment_ec2.tf"
-    git_last_modified_at = "2024-01-26 23:01:56"
-    git_last_modified_by = "tprendervill@paloaltonetworks.com"
-    git_modifiers        = "tprendervill"
+    git_last_modified_at = "2024-01-30 20:36:05"
+    git_last_modified_by = "4009987+chambersaj@users.noreply.github.com"
+    git_modifiers        = "4009987+chambersaj/tprendervill"
     git_org              = "chambersaj"
     git_repo             = "prisma-cloud-devsecops-workshop"
     yor_name             = "web_host_storage"
